@@ -10,7 +10,7 @@ public class CameraLookAt : MonoBehaviour
 
     private void Update()
     {
-        if (target == null)
+        if (!target)
             return;
 
         Vector3 targetPosition = target.position + offset;
