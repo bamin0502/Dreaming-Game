@@ -12,7 +12,7 @@ public class UiManager : MonoBehaviour
     
     private void Start()
     {
-        gameoverUI.gameObject.SetActive(false);
+        //gameoverUI.gameObject.SetActive(false);
         healthSlider.maxValue = 100;
     }
     

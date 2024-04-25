@@ -2,6 +2,7 @@ using UnityEngine;
 using UniRx;
 using UnityEngine.Rendering.PostProcessing;
 using EPOOutline;
+using DamageNumbersPro;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -12,8 +13,11 @@ public class PlayerHealth : MonoBehaviour
     public PostProcessVolume volume;
     private ColorGrading colorGrading;
     public Outlinable outlinable;
-    private static readonly int IsDead = Animator.StringToHash("isDead");
+    private static readonly int IsDead = Animator.StringToHash("IsDead");
 
+    public DamageNumber TakeDamagePrefab;
+    public Transform DamageNumberSpawnPoint;
+    public bool isDead { get; private set; } = false;
     void Start()
     {
         if (volume.profile.TryGetSettings(out colorGrading))
@@ -22,7 +26,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 UiManager.instance.UpdateHealth(newHealth);
                 Debug.Log("Health: " + newHealth);
-                if (newHealth <= 0)
+                if (newHealth <= 0 && !isDead)
                 {
                     Debug.Log("Player is dead");
                     Die();
@@ -33,13 +37,22 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health.Value -= damage;
-        FlashRedEffect();
+        if (!isDead && health.Value > 0)
+        {
+            health.Value -= damage;
+            TakeDamagePrefab.Spawn(DamageNumberSpawnPoint.position, damage);
+            health.Value=Mathf.Max(health.Value,0);
+            FlashRedEffect();    
+        }
+        
     }
 
     void Die()
     {
+        isDead = true;
         animator.SetTrigger(IsDead);
+        gameObject.GetComponent<PlayerMovement>().enabled = false;
+        gameObject.GetComponent<CapsuleCollider>().enabled = false;
     }
 
     void FlashRedEffect()

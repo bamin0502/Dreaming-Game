@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
                 else
                 {
                     Debug.LogWarning("Target or NavMeshAgent is null");
+                    animator.SetBool(IsTarget, false);
                 }
             })
             .AddTo(this);
