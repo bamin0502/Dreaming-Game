@@ -34,6 +34,7 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1262002697-0
         - globalObjectIdString: GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-611635066-0
         - globalObjectIdString: GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-7913875126909848426-3685142194333364003
+        - globalObjectIdString: GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-103248835-0
         values:
         - colorIndex: 0
           iconNameOrGuid: Terrain Icon
@@ -67,3 +68,5 @@ MonoBehaviour:
           iconNameOrGuid: ReflectionProbe Icon
         - colorIndex: 0
           iconNameOrGuid: AvatarMask On Icon
+        - colorIndex: 0
+          iconNameOrGuid: Settings Icon

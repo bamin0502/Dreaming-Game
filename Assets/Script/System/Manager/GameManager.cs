@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UiManager.instance.PauseGameUI.gameObject.SetActive(false);
+        SoundManager.Inst.PlayBgm(0);
     }
 
     private void Update()

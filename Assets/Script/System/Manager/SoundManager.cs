@@ -1,43 +1,63 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private static SoundManager Inst; // 싱글톤을 할당할 전역 변수
-    
-    public AudioClip[] bgmClips; // 배경음악 클립
-    public AudioClip[] sfxClips; // 효과음 클립
-    public AudioSource bgmSource; // 배경음악 소스
-    public AudioSource sfxSource; // 효과음 소스
-    
-    
+    public static SoundManager Inst;
+
+    public AudioClip[] bgmClips;
+    public AudioClip[] sfxClips;
+    public AudioSource bgmSource;
+    public AudioSource sfxSource;
+
     private void Awake()
     {
-        // 싱글톤 할당
         if (Inst == null)
         {
             Inst = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
     }
-    //음향 조절 
+    
+    private void Start()
+    {
+        bgmSource = gameObject.AddComponent<AudioSource>();
+        sfxSource = gameObject.AddComponent<AudioSource>();
+    }
+
     public void SetBgmVolume(float volume)
     {
         bgmSource.volume = volume;
     }
+
     public void SetSfxVolume(float volume)
     {
         sfxSource.volume = volume;
     }
-    //모든 음향 음소거
+
     public void MuteAllSound(bool isMute)
     {
         bgmSource.mute = isMute;
         sfxSource.mute = isMute;
+    }
+
+    public void PlayBgm(int index)
+    {
+        if (index < 0 || index >= bgmClips.Length)
+            return;
+        bgmSource.clip = bgmClips[index];
+        bgmSource.Play();
+        bgmSource.loop = true;
+    }
+
+    public void PlaySfx(int index)
+    {
+        if (index < 0 || index >= sfxClips.Length)
+            return;
+        sfxSource.PlayOneShot(sfxClips[index]);
     }
 }
