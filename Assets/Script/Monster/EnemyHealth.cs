@@ -3,12 +3,14 @@ using UniRx;
 using UnityEngine.AI;
 using DamageNumbersPro;
 
+
 public class EnemyHealth : MonoBehaviour
 {
     public int health;
     private EnemyData enemyData;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
+    private BoxCollider boxCollider;
     
     public DamageNumber EnemyTakeDamage;
     public Transform damageNumberSpawnPoint;
@@ -22,6 +24,8 @@ public class EnemyHealth : MonoBehaviour
         enemyData = GetComponent<Enemy>().enemyData;
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        boxCollider = GetComponent<BoxCollider>();
+
     }
     
     public void Start()
@@ -38,6 +42,8 @@ public class EnemyHealth : MonoBehaviour
             Die();
             navMeshAgent.isStopped = true;
             navMeshAgent.enabled = false;
+            boxCollider.enabled = false;
+            GameManager.instance.AddScore(enemyData.score);
         }
     }
 

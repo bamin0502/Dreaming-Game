@@ -4,15 +4,17 @@ using UnityEngine.InputSystem;
 using UniRx;
 using UniRx.Triggers;
 using Random = UnityEngine.Random;
+using EPOOutline;
 
 public class Gun : MonoBehaviour
 {
     public Transform firePoint;
     public LineRenderer lineRenderer;
     public float bulletLifeTime = 2f;
-
+    public ParticleSystem fireEffect;
     private Camera mainCamera;
     private int damage;
+    public Outlinable outlinable;
 
     void Start()
     {
@@ -24,16 +26,16 @@ public class Gun : MonoBehaviour
         if (context.performed)
         {
             Fire();
+            fireEffect.Play();
         }
     }
 
     private void Fire()
     {
-        RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         Vector3 targetPoint = ray.GetPoint(100); // 기본 거리 설정
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out var hit))
         {
             targetPoint = hit.point;
             ApplyDamage(hit);

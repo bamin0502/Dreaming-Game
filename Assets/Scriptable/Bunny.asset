@@ -16,3 +16,4 @@ MonoBehaviour:
   maxHealth: 50
   damage: 15
   spawnPercent: 40
+  score: 50

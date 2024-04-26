@@ -1,7 +1,10 @@
-using System.Collections;
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -9,9 +12,11 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> enemyPrefabs = new List<GameObject>();
     public float spawnInterval = 1.0f;
     private List<GameObject> enemyPool = new List<GameObject>();
-
+    
+    
     void Start()
     {
+        
         Observable.Interval(System.TimeSpan.FromSeconds(spawnInterval))
             .Subscribe(_ => {
                 SpawnEnemy();
@@ -29,14 +34,14 @@ public class EnemySpawner : MonoBehaviour
     {
         if (spawnPoints.Length > 0)
         {
-            int spawnIndex = Random.Range(0, spawnPoints.Length);
-            Transform spawnPoint = spawnPoints[spawnIndex];
+            var spawnIndex = Random.Range(0, spawnPoints.Length);
+            var spawnPoint = spawnPoints[spawnIndex];
 
             // 확률에 따라 적 선택
-            GameObject selectedEnemyPrefab = SelectEnemyPrefab();
+            var selectedEnemyPrefab = SelectEnemyPrefab();
             if (selectedEnemyPrefab != null)
             {
-                GameObject enemy = GetPooledEnemy(spawnPoint, selectedEnemyPrefab);
+                var enemy = GetPooledEnemy(spawnPoint, selectedEnemyPrefab);
                 if (enemy != null)
                 {
                     enemy.transform.position = spawnPoint.position;
@@ -50,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefabs.Count > 0)
         {
-            int prefabIndex = Random.Range(0, enemyPrefabs.Count);
+            var prefabIndex = Random.Range(0, enemyPrefabs.Count);
             return enemyPrefabs[prefabIndex];
         }
         return null;
@@ -62,9 +67,7 @@ public class EnemySpawner : MonoBehaviour
             if (!enemy.activeInHierarchy)
             {
                 Debug.Log("풀에서 적을 재사용합니다.");
-                enemy.transform.SetParent(spawnPoint, false);
-                enemy.transform.localPosition = Vector3.zero; 
-                enemy.transform.localRotation = Quaternion.identity; 
+                ResetEnemy(enemy, spawnPoint);
                 return enemy;
             }
         }
@@ -76,8 +79,8 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefabs.Count > 0)
         {
-            int prefabIndex = Random.Range(0, enemyPrefabs.Count);
-            GameObject newEnemy = Instantiate(enemyPrefabs[prefabIndex], spawnPoint.position, spawnPoint.rotation, spawnPoint);
+            var prefabIndex = Random.Range(0, enemyPrefabs.Count);
+            var newEnemy = Instantiate(enemyPrefabs[prefabIndex], spawnPoint.position, spawnPoint.rotation, spawnPoint);
             enemyPool.Add(newEnemy);
             return newEnemy;
         }
@@ -94,4 +97,21 @@ public class EnemySpawner : MonoBehaviour
         }
         Debug.Log("모든 적을 제거했습니다.");
     }
+
+    private void ResetEnemy(GameObject enemy,Transform spawnPoint)
+    {
+        enemy.transform.SetParent(spawnPoint, false);
+        enemy.transform.localPosition = Vector3.zero;
+        enemy.transform.localRotation = Quaternion.identity;
+        
+        var navMeshAgent=enemy.GetComponent<NavMeshAgent>();
+        //navMeshAgent.isStopped = false;
+        navMeshAgent.enabled = true;
+        var boxCollider = enemy.GetComponent<BoxCollider>();
+        boxCollider.enabled = true;
+        
+        var enemyHealth = enemy.GetComponent<EnemyHealth>();
+        enemyHealth.health = enemy.GetComponent<Enemy>().enemyData.maxHealth;
+    }
+    
 }

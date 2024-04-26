@@ -11,6 +11,8 @@ public class UiManager : MonoBehaviour
     public Image gameoverUI; // 게임 오버 UI
     public Slider healthSlider; // 체력 슬라이더
     public TMP_Text scoreText; // 점수 텍스트
+    public Image PauseGameUI;
+    
     
     private void Start()
     {
@@ -39,4 +41,7 @@ public class UiManager : MonoBehaviour
     {
         scoreText.text = "Score: " + score;
     }
+    
+    
+    
 }

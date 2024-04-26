@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance; // 싱글톤을 할당할 전역 변수
-    public CinemachineVirtualCamera virtualCamera; // 카메라
+    
     public int score = 0; // 게임 점수
-
-    public Cursor cursor;
-
+    
+   
     private void Awake()
     {
         // 싱글톤 할당
@@ -26,8 +22,16 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        UiManager.instance.PauseGameUI.gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Time.timeScale = 0;
+            UiManager.instance.PauseGameUI.gameObject.SetActive(true);
+        }
     }
 
     public void AddScore(int score)
@@ -36,6 +40,15 @@ public class GameManager : MonoBehaviour
         UiManager.instance.UpdateScore(this.score);
     }
     
+    public void GameQuit()
+    {
+        Application.Quit();
+    }
     
+    public void ContinueGame()
+    {
+        Time.timeScale = 1;
+        UiManager.instance.PauseGameUI.gameObject.SetActive(false);
+    }
 
 }
