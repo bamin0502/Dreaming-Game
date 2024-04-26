@@ -47,7 +47,7 @@ public class PlayerHealth : MonoBehaviour
         
     }
 
-    void Die()
+    private void Die()
     {
         isDead = true;
         animator.SetTrigger(IsDead);
@@ -56,7 +56,7 @@ public class PlayerHealth : MonoBehaviour
         gameObject.GetComponent<CapsuleCollider>().enabled = false;
     }
 
-    void FlashRedEffect()
+    private void FlashRedEffect()
     {
         colorGrading.colorFilter.value = Color.red;
         outlinable.OutlineParameters.Color = Color.red;

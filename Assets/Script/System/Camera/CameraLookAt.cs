@@ -13,7 +13,7 @@ public class CameraLookAt : MonoBehaviour
         if (!target)
             return;
 
-        Vector3 targetPosition = target.position + offset;
+        var targetPosition = target.position + offset;
         transform.position = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
         transform.LookAt(target);
     }

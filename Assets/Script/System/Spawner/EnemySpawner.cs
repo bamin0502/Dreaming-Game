@@ -1,5 +1,3 @@
-
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
@@ -12,25 +10,26 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> enemyPrefabs = new List<GameObject>();
     public float spawnInterval = 1.0f;
     private List<GameObject> enemyPool = new List<GameObject>();
-    
-    
-    void Start()
+
+
+    private void Start()
     {
-        
         Observable.Interval(System.TimeSpan.FromSeconds(spawnInterval))
             .Subscribe(_ => {
                 SpawnEnemy();
             }).AddTo(this);
     }
+    
     [Tooltip("테스트용 키 입력 함수 나중에 제거 예정")]
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.X))  // X 키를 누르면 모든 적을 제거
         {
             RemoveAllEnemies();
         }
     }
-    void SpawnEnemy()
+
+    private void SpawnEnemy()
     {
         if (spawnPoints.Length > 0)
         {
@@ -86,7 +85,8 @@ public class EnemySpawner : MonoBehaviour
         }
         return null;
     }
-    void RemoveAllEnemies()
+
+    private void RemoveAllEnemies()
     {
         foreach (var enemy in enemyPool)
         {
@@ -105,7 +105,6 @@ public class EnemySpawner : MonoBehaviour
         enemy.transform.localRotation = Quaternion.identity;
         
         var navMeshAgent=enemy.GetComponent<NavMeshAgent>();
-        //navMeshAgent.isStopped = false;
         navMeshAgent.enabled = true;
         var boxCollider = enemy.GetComponent<BoxCollider>();
         boxCollider.enabled = true;

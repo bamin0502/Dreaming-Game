@@ -3,10 +3,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance; // 싱글톤을 할당할 전역 변수
-    
     public int score = 0; // 게임 점수
     
-   
     private void Awake()
     {
         // 싱글톤 할당
@@ -43,6 +41,9 @@ public class GameManager : MonoBehaviour
     public void GameQuit()
     {
         Application.Quit();
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
     }
     
     public void ContinueGame()

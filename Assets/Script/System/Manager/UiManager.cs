@@ -13,7 +13,6 @@ public class UiManager : MonoBehaviour
     public TMP_Text scoreText; // 점수 텍스트
     public Image PauseGameUI;
     
-    
     private void Start()
     {
         //gameoverUI.gameObject.SetActive(false);

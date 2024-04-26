@@ -32,9 +32,9 @@ public class Gun : MonoBehaviour
 
     private void Fire()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        var ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        Vector3 targetPoint = ray.GetPoint(100); // 기본 거리 설정
+        var targetPoint = ray.GetPoint(100); // 기본 거리 설정
         if (Physics.Raycast(ray, out var hit))
         {
             targetPoint = hit.point;

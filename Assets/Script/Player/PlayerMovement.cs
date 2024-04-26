@@ -38,34 +38,27 @@ public class PlayerMovement : MonoBehaviour
     public void OnMove(InputAction.CallbackContext value)
     {
         if(playerHealth.isDead) return;
-        Vector2 input = value.ReadValue<Vector2>();
+        var input = value.ReadValue<Vector2>();
         moveDirection = new Vector3(input.x, 0, input.y);
     }
 
     void Update()
     {
         if (playerHealth.isDead) return;
-        if (moveDirection != Vector3.zero)
-        {
-            animator.SetBool(Move, true);
-        }
-        else
-        {
-            animator.SetBool(Move, false);
-        }
-        
-        
+        animator.SetBool(Move, moveDirection != Vector3.zero);
     }
 
     private void RotateTowardsCursor()
     {
-        Ray ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (plane.Raycast(ray, out float distance))
+        if(Time.timeScale==0) return;
+        var ray = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (plane.Raycast(ray, out var distance))
         {
-            Vector3 target = ray.GetPoint(distance);
-            Vector3 direction = target - transform.position;
+            var target = ray.GetPoint(distance);
+            var transform1 = transform;
+            var direction = target - transform1.position;
             direction.y = 0;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), 0.1f);
+            transform.rotation = Quaternion.Slerp(transform1.rotation, Quaternion.LookRotation(direction), 0.1f);
         }
     }
 
@@ -79,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         if (playerHealth.isDead) return;
         if (moveDirection != Vector3.zero)
         {
-            Vector3 move = new Vector3(moveDirection.x, 0, moveDirection.z).normalized * moveSpeed;
+            var move = new Vector3(moveDirection.x, 0, moveDirection.z).normalized * moveSpeed;
             rb.MovePosition(rb.position + move * Time.fixedDeltaTime);
         }
     }
