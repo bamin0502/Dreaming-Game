@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class UiManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class UiManager : MonoBehaviour
     
     private void Start()
     {
-        //gameoverUI.gameObject.SetActive(false);
+        gameoverUI.gameObject.SetActive(false);
         healthSlider.maxValue = 100;
     }
     
@@ -41,6 +42,10 @@ public class UiManager : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
     
-    
+    public void GameOver()
+    {
+        gameoverUI.gameObject.SetActive(true);
+        gameoverUI.DOFade(1, 3);
+    }
     
 }

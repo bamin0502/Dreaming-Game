@@ -11,10 +11,10 @@ public class EnemyHealth : MonoBehaviour
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private BoxCollider boxCollider;
+    private Rigidbody rigidbody;
     
     public DamageNumber EnemyTakeDamage;
     public Transform damageNumberSpawnPoint;
-    
     
     [Tooltip("애니메이터의 파라미터 지정")]
     private static readonly int IsDead = Animator.StringToHash("IsDead");
@@ -25,7 +25,7 @@ public class EnemyHealth : MonoBehaviour
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         boxCollider = GetComponent<BoxCollider>();
-
+        rigidbody = GetComponent<Rigidbody>();
     }
     
     public void Start()
@@ -43,6 +43,7 @@ public class EnemyHealth : MonoBehaviour
             navMeshAgent.isStopped = true;
             navMeshAgent.enabled = false;
             boxCollider.enabled = false;
+            rigidbody.isKinematic = true;
             GameManager.instance.AddScore(enemyData.score);
         }
     }

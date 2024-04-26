@@ -53,7 +53,8 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
-    GameObject SelectEnemyPrefab()
+
+    private GameObject SelectEnemyPrefab()
     {
         if (enemyPrefabs.Count > 0)
         {
@@ -62,7 +63,8 @@ public class EnemySpawner : MonoBehaviour
         }
         return null;
     }
-    GameObject GetPooledEnemy(Transform spawnPoint, GameObject selectedEnemyPrefab)
+
+    private GameObject GetPooledEnemy(Transform spawnPoint, GameObject selectedEnemyPrefab)
     {
         foreach (var enemy in enemyPool)
         {
@@ -77,7 +79,7 @@ public class EnemySpawner : MonoBehaviour
         return CreateNewEnemy(spawnPoint);
     }
 
-    GameObject CreateNewEnemy(Transform spawnPoint)
+    private GameObject CreateNewEnemy(Transform spawnPoint)
     {
         if (enemyPrefabs.Count > 0)
         {

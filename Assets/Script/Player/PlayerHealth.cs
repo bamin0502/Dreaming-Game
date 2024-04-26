@@ -57,6 +57,11 @@ public class PlayerHealth : MonoBehaviour
         outlinable.OutlineParameters.Color = Color.white;
         gameObject.GetComponent<PlayerMovement>().enabled = false;
         gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        Observable.Timer(System.TimeSpan.FromSeconds(5))
+            .Subscribe(_ =>
+            {
+                UiManager.instance.GameOver();
+            });
     }
 
     private void FlashRedEffect()
