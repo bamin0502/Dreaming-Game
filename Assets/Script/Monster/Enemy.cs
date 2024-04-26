@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     public EnemyData enemyData;
     private Animator animator;
     private static readonly int IsTarget = Animator.StringToHash("IsTarget");
-
+    private PlayerHealth playerHealth;
     public void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -20,11 +20,11 @@ public class Enemy : MonoBehaviour
     public void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
-
+        playerHealth = target.GetComponent<PlayerHealth>();
         Observable.EveryUpdate()
             .Subscribe(_ =>
             {
-                if (target != null && navMeshAgent != null && navMeshAgent.enabled && gameObject.activeInHierarchy)
+                if (target != null && navMeshAgent != null && navMeshAgent.enabled && !playerHealth.isDead )
                 {
                     navMeshAgent.SetDestination(target.position);
                     navMeshAgent.speed=enemyData.moveSpeed;
@@ -36,6 +36,12 @@ public class Enemy : MonoBehaviour
                     Debug.LogWarning("Target or NavMeshAgent is null");
                     animator.SetBool(IsTarget, false);
                     
+                }
+                
+                if(target==null)
+                {
+                    navMeshAgent.isStopped = true;
+                    animator.SetBool(IsTarget, false);
                 }
             })
             .AddTo(this);

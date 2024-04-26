@@ -18,11 +18,13 @@ public class Gun : MonoBehaviour
     private int damage;
     private IDisposable outlineSubscription;
     private RaycastHit lastHit;
-    
+    private PlayerHealth PlayerHealth;
     private List<Outlinable> outlinables = new List<Outlinable>();
+    
     void Start()
     {
         mainCamera = Camera.main;
+        PlayerHealth = GetComponentInParent<PlayerHealth>();
     }
 
     private void OnEnable()
@@ -56,6 +58,7 @@ public class Gun : MonoBehaviour
 
     private void Fire()
     {
+        if(PlayerHealth.isDead) return;
         var ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         var targetPoint = ray.GetPoint(100); // 기본 거리 설정

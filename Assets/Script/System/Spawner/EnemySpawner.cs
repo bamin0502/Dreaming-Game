@@ -10,10 +10,11 @@ public class EnemySpawner : MonoBehaviour
     public List<GameObject> enemyPrefabs = new List<GameObject>();
     public float spawnInterval = 1.0f;
     private List<GameObject> enemyPool = new List<GameObject>();
-
+    private PlayerHealth playerHealth;
 
     private void Start()
     {
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         Observable.Interval(System.TimeSpan.FromSeconds(spawnInterval))
             .Subscribe(_ => {
                 SpawnEnemy();
@@ -31,6 +32,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
+        if(playerHealth.isDead)
+            return;
         if (spawnPoints.Length > 0)
         {
             var spawnIndex = Random.Range(0, spawnPoints.Length);

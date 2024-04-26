@@ -14,7 +14,8 @@ public class PlayerHealth : MonoBehaviour
     private ColorGrading colorGrading;
     public Outlinable outlinable;
     private static readonly int IsDead = Animator.StringToHash("IsDead");
-
+    
+    public ParticleSystem[] bloodParticles;
     public DamageNumber TakeDamagePrefab;
     public Transform DamageNumberSpawnPoint;
     public bool isDead { get; private set; } = false;
@@ -40,6 +41,7 @@ public class PlayerHealth : MonoBehaviour
         if (!isDead && health.Value > 0)
         {
             health.Value -= damage;
+            bloodParticles[Random.Range(0, bloodParticles.Length)].Play();
             TakeDamagePrefab.Spawn(DamageNumberSpawnPoint.position, damage);
             health.Value=Mathf.Max(health.Value,0);
             FlashRedEffect();    
@@ -51,6 +53,7 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
         animator.SetTrigger(IsDead);
+        enabled = false;
         outlinable.OutlineParameters.Color = Color.white;
         gameObject.GetComponent<PlayerMovement>().enabled = false;
         gameObject.GetComponent<CapsuleCollider>().enabled = false;
