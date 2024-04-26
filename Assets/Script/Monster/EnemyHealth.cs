@@ -11,7 +11,7 @@ public class EnemyHealth : MonoBehaviour
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private BoxCollider boxCollider;
-    private Rigidbody rigidbody;
+
     
     public DamageNumber EnemyTakeDamage;
     public Transform damageNumberSpawnPoint;
@@ -25,7 +25,7 @@ public class EnemyHealth : MonoBehaviour
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         boxCollider = GetComponent<BoxCollider>();
-        rigidbody = GetComponent<Rigidbody>();
+        
     }
     
     public void Start()
@@ -43,7 +43,7 @@ public class EnemyHealth : MonoBehaviour
             navMeshAgent.isStopped = true;
             navMeshAgent.enabled = false;
             boxCollider.enabled = false;
-            rigidbody.isKinematic = true;
+
             GameManager.instance.AddScore(enemyData.score);
         }
     }

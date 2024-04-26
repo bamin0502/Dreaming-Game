@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Data/EnemyData")]
 public class EnemyData : ScriptableObject
 {

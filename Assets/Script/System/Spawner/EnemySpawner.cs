@@ -11,9 +11,10 @@ public class EnemySpawner : MonoBehaviour
     public float spawnInterval = 1.0f;
     private List<GameObject> enemyPool = new List<GameObject>();
     private PlayerHealth playerHealth;
-
+    private EnemyData enemyData;
     private void Start()
     {
+        
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         Observable.Interval(System.TimeSpan.FromSeconds(spawnInterval))
             .Subscribe(_ => {
@@ -58,8 +59,17 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefabs.Count > 0)
         {
-            var prefabIndex = Random.Range(0, enemyPrefabs.Count);
-            return enemyPrefabs[prefabIndex];
+            var randomValue = Random.Range(0, 100);
+            var totalWeight = 0;
+            foreach (var enemyPrefab in enemyPrefabs)
+            {
+                var enemyData = enemyPrefab.GetComponent<Enemy>().enemyData;
+                totalWeight += enemyData.spawnPercent;
+                if (randomValue < totalWeight)
+                {
+                    return enemyPrefab;
+                }
+            }
         }
         return null;
     }

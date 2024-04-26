@@ -18,9 +18,11 @@ public class PlayerHealth : MonoBehaviour
     public ParticleSystem[] bloodParticles;
     public DamageNumber TakeDamagePrefab;
     public Transform DamageNumberSpawnPoint;
+    private Rigidbody rigidbody;
     public bool isDead { get; private set; } = false;
     void Start()
     {
+        rigidbody = GetComponent<Rigidbody>();
         if (volume.profile.TryGetSettings(out colorGrading))
         {
             health.Subscribe(newHealth =>
@@ -54,6 +56,7 @@ public class PlayerHealth : MonoBehaviour
         isDead = true;
         animator.SetTrigger(IsDead);
         enabled = false;
+        rigidbody.isKinematic = true;
         outlinable.OutlineParameters.Color = Color.white;
         gameObject.GetComponent<PlayerMovement>().enabled = false;
         gameObject.GetComponent<CapsuleCollider>().enabled = false;
