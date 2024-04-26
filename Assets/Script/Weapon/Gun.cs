@@ -1,26 +1,50 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UniRx;
 using UniRx.Triggers;
 using Random = UnityEngine.Random;
 using EPOOutline;
+using UnityEngine.UIElements;
 
 public class Gun : MonoBehaviour
 {
     public Transform firePoint;
     public LineRenderer lineRenderer;
-    public float bulletLifeTime = 2f;
+    public float bulletLifeTime = 0.2f;
     public ParticleSystem fireEffect;
     private Camera mainCamera;
     private int damage;
-    public Outlinable outlinable;
-
+    private IDisposable outlineSubscription;
+    private RaycastHit lastHit;
+    
+    private List<Outlinable> outlinables = new List<Outlinable>();
     void Start()
     {
         mainCamera = Camera.main;
     }
 
+    private void OnEnable()
+    {
+        outlineSubscription=this.UpdateAsObservable()
+            .Select(_ =>Mouse.current.position.ReadValue())
+            .Select(position => mainCamera.ScreenPointToRay(position))
+            .Select(ray =>Physics.Raycast(ray,out lastHit) ? lastHit.collider:null)
+            .DistinctUntilChanged()
+            .Subscribe(HandleOutLine);
+    }
+
+    private void OnDisable()
+    {
+        outlineSubscription?.Dispose();
+    }
+
+    private void Update()
+    {
+        
+    }
+    
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -39,6 +63,7 @@ public class Gun : MonoBehaviour
         {
             targetPoint = hit.point;
             ApplyDamage(hit);
+
         }
 
         ShootEffect(targetPoint).Subscribe(_ => { }, () =>
@@ -62,5 +87,26 @@ public class Gun : MonoBehaviour
         {
             hit.collider.GetComponent<EnemyHealth>().TakeDamage(damage);
         }
+    }
+    
+    private void HandleOutLine(Collider hitCollider)
+    {
+        //커서가 닿을때는 초록색 아니면 빨강색 테두리
+        foreach (var outlinable in outlinables)
+        {
+            outlinable.OutlineParameters.Color = hitCollider == null ? Color.red : Color.green;
+        }
+        outlinables.Clear();
+        if (hitCollider != null)
+        {
+            var outlinable = hitCollider.GetComponent<Outlinable>();
+            if (outlinable != null)
+            {
+                outlinable.OutlineParameters.Color = Color.green;
+                outlinables.Add(outlinable);
+            }
+        }
+        
+        
     }
 }

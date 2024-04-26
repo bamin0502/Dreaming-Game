@@ -2858,6 +2858,10 @@ PrefabInstance:
       propertyPath: fireEffect
       value: 
       objectReference: {fileID: 497755875}
+    - target: {fileID: 3615743938301781503, guid: deefaaddb6a974c4aae3b7c0e40c9196, type: 3}
+      propertyPath: bulletLifeTime
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7913875126909848426, guid: deefaaddb6a974c4aae3b7c0e40c9196, type: 3}
       propertyPath: m_Name
       value: Player
