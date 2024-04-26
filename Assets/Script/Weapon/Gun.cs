@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UniRx;
 using UniRx.Triggers;
+using Random = UnityEngine.Random;
 
 public class Gun : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Gun : MonoBehaviour
     public float bulletLifeTime = 2f;
 
     private Camera mainCamera;
+    private int damage;
 
     void Start()
     {
@@ -34,6 +36,7 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             targetPoint = hit.point;
+            ApplyDamage(hit);
         }
 
         ShootEffect(targetPoint).Subscribe(_ => { }, () =>
@@ -49,5 +52,13 @@ public class Gun : MonoBehaviour
         lineRenderer.enabled = true;
 
         return Observable.Timer(TimeSpan.FromSeconds(bulletLifeTime));
+    }
+    private void ApplyDamage(RaycastHit hit)
+    {
+        damage=Random.Range(10,20);
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            hit.collider.GetComponent<EnemyHealth>().TakeDamage(damage);
+        }
     }
 }

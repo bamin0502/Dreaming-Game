@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UiManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class UiManager : MonoBehaviour
 
     public Image gameoverUI; // 게임 오버 UI
     public Slider healthSlider; // 체력 슬라이더
+    public TMP_Text scoreText; // 점수 텍스트
     
     private void Start()
     {
@@ -31,5 +33,10 @@ public class UiManager : MonoBehaviour
     public void UpdateHealth(int health)
     {
         healthSlider.value = health;
+    }
+    
+    public void UpdateScore(int score)
+    {
+        scoreText.text = "Score: " + score;
     }
 }

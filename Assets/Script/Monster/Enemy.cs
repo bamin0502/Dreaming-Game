@@ -28,12 +28,14 @@ public class Enemy : MonoBehaviour
                 {
                     navMeshAgent.SetDestination(target.position);
                     navMeshAgent.speed=enemyData.moveSpeed;
+                    navMeshAgent.isStopped = false;
                     animator.SetBool(IsTarget, true);
                 }
                 else
                 {
                     Debug.LogWarning("Target or NavMeshAgent is null");
                     animator.SetBool(IsTarget, false);
+                    
                 }
             })
             .AddTo(this);

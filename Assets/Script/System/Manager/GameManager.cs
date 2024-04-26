@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera; // 카메라
     public int score = 0; // 게임 점수
 
+    public Cursor cursor;
+
     private void Awake()
     {
         // 싱글톤 할당
@@ -21,12 +23,19 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    // 점수를 증가시키는 함수
-    public void AddScore(int value)
+    
+    private void Start()
     {
-        score += value;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
+
+    public void AddScore(int score)
+    {
+        this.score += score;
+        UiManager.instance.UpdateScore(this.score);
+    }
+    
     
 
 }

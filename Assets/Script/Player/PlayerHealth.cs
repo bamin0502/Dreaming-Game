@@ -51,6 +51,7 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
         animator.SetTrigger(IsDead);
+        outlinable.OutlineParameters.Color = Color.white;
         gameObject.GetComponent<PlayerMovement>().enabled = false;
         gameObject.GetComponent<CapsuleCollider>().enabled = false;
     }
