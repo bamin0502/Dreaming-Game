@@ -745,7 +745,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1d3bfb9269f136947bf8ac164cace1ff, type: 3}
   - {fileID: 8300000, guid: 02e6208ec76314158a9f548f51fe9f11, type: 3}
   bgmSource: {fileID: 1538811579}
-  sfxSource: {fileID: 1538811580}
+  sfxSource: {fileID: 1538811579}
 --- !u!1 &107578543
 GameObject:
   m_ObjectHideFlags: 0
@@ -3849,7 +3849,19 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1262002699}
+        m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
+        m_MethodName: UpdateHealth
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6036422114026242514
 MonoBehaviour:
   m_ObjectHideFlags: 0
