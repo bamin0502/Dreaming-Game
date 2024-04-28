@@ -1,43 +1,118 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+[System.Serializable]
+public class Sound
+{
+    public string name;
+    public AudioClip clip;
+}
 
 public class SoundManager : MonoBehaviour
 {
-    private static SoundManager Inst; // 싱글톤을 할당할 전역 변수
-    
-    public AudioClip[] bgmClips; // 배경음악 클립
-    public AudioClip[] sfxClips; // 효과음 클립
-    public AudioSource bgmSource; // 배경음악 소스
-    public AudioSource sfxSource; // 효과음 소스
-    
-    
+    public static SoundManager instance;
+
+    [SerializeField] private Sound[] effectSounds;
+    [SerializeField] private Sound[] bgmSounds;
+
+    public AudioSource bgmAudioSource;
+    [SerializeField] private AudioSource[] effectAudioSources;
+
+    private float bgmVolume = 1f;
+    private float sfxVolume = 1f;
+
     private void Awake()
     {
-        // 싱글톤 할당
-        if (Inst == null)
+        if (instance == null)
         {
-            Inst = this;
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
     }
-    //음향 조절 
+
+    private void Update()
+    {
+        bgmAudioSource.ignoreListenerPause = true;
+        foreach (AudioSource effectAudioSource in effectAudioSources)
+        {
+            effectAudioSource.ignoreListenerPause = true;
+        }
+    }
+
+    private void Start()
+    {
+        bgmAudioSource.volume = PlayerPrefs.GetFloat("bgmVolume", 1f);
+        foreach (AudioSource effectAudioSource in effectAudioSources)
+        {
+            effectAudioSource.volume = PlayerPrefs.GetFloat("sfxVolume", 1f);
+        }
+        bgmAudioSource.loop = true;
+    }
+
     public void SetBgmVolume(float volume)
     {
-        bgmSource.volume = volume;
+        bgmVolume = volume;
+        bgmAudioSource.volume = volume;
+        
     }
+
     public void SetSfxVolume(float volume)
     {
-        sfxSource.volume = volume;
+        sfxVolume = volume;
+        foreach (AudioSource effectAudioSource in effectAudioSources)
+        {
+            effectAudioSource.volume = volume;
+        }
+        
     }
-    //모든 음향 음소거
+
+    public void PlaySE(string name)
+    {
+        Sound effectSound = System.Array.Find(effectSounds, sound => sound.name == name);
+        if (effectSound != null)
+        {
+            foreach (AudioSource effectAudioSource in effectAudioSources)
+            {
+                if (effectAudioSource.isPlaying) continue;
+                effectAudioSource.clip = effectSound.clip;
+                effectAudioSource.Play();
+                break;
+            }
+        }
+        else
+        {
+            Debug.Log(name + " sound is not registered in SoundManager.");
+        }
+    }
+
+    public void StopSE(string name)
+    {
+        Sound effectSound = System.Array.Find(effectSounds, sound => sound.name == name);
+        if (effectSound != null)
+        {
+            foreach (AudioSource effectAudioSource in effectAudioSources)
+            {
+                if (!effectAudioSource.isPlaying || effectAudioSource.clip != effectSound.clip) continue;
+                effectAudioSource.Stop();
+                break;
+            }
+        }
+        else
+        {
+            Debug.Log(name + " sound is not registered in SoundManager.");
+        }
+    }
+    
     public void MuteAllSound(bool isMute)
     {
-        bgmSource.mute = isMute;
-        sfxSource.mute = isMute;
+        bgmAudioSource.mute = isMute;
+        foreach (AudioSource effectAudioSource in effectAudioSources)
+        {
+            effectAudioSource.mute = isMute;
+        }
     }
 }

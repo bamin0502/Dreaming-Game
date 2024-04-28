@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UniRx;
 using UnityEngine.AI;
@@ -14,7 +15,6 @@ public class EnemySpawner : MonoBehaviour
     private EnemyData enemyData;
     private void Start()
     {
-        
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         Observable.Interval(System.TimeSpan.FromSeconds(spawnInterval))
             .Subscribe(_ => {
@@ -22,15 +22,6 @@ public class EnemySpawner : MonoBehaviour
             }).AddTo(this);
     }
     
-    [Tooltip("테스트용 키 입력 함수 나중에 제거 예정")]
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.X))  // X 키를 누르면 모든 적을 제거
-        {
-            RemoveAllEnemies();
-        }
-    }
-
     private void SpawnEnemy()
     {
         if(playerHealth.isDead)
@@ -59,34 +50,37 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyPrefabs.Count > 0)
         {
-            var randomValue = Random.Range(0, 100);
-            var totalWeight = 0;
-            foreach (var enemyPrefab in enemyPrefabs)
+            var totalWeight = enemyPrefabs.Sum(prefab => prefab.GetComponent<Enemy>().enemyData.spawnPercent);
+            var randomValue = Random.Range(0, totalWeight);
+            var weightSum = 0;
+            foreach (var prefab in enemyPrefabs)
             {
-                var enemyData = enemyPrefab.GetComponent<Enemy>().enemyData;
-                totalWeight += enemyData.spawnPercent;
-                if (randomValue < totalWeight)
+                weightSum += prefab.GetComponent<Enemy>().enemyData.spawnPercent;
+                if (randomValue <= weightSum)
                 {
-                    return enemyPrefab;
+                    return prefab;
                 }
             }
+            return null;
         }
-        return null;
+        else
+        {
+            return null;
+        }
     }
 
     private GameObject GetPooledEnemy(Transform spawnPoint, GameObject selectedEnemyPrefab)
     {
-        foreach (var enemy in enemyPool)
+        var enemy = enemyPool.Find(e => !e.activeInHierarchy && e.CompareTag(selectedEnemyPrefab.tag));
+        if (enemy == null)
         {
-            if (!enemy.activeInHierarchy)
-            {
-                Debug.Log("풀에서 적을 재사용합니다.");
-                ResetEnemy(enemy, spawnPoint);
-                return enemy;
-            }
+            enemy = CreateNewEnemy(spawnPoint);
         }
-        Debug.Log("풀에 적이 없어 새로 생성합니다.");
-        return CreateNewEnemy(spawnPoint);
+        else
+        {
+            ResetEnemy(enemy, spawnPoint);
+        }
+        return enemy;
     }
 
     private GameObject CreateNewEnemy(Transform spawnPoint)
@@ -100,19 +94,7 @@ public class EnemySpawner : MonoBehaviour
         }
         return null;
     }
-
-    private void RemoveAllEnemies()
-    {
-        foreach (var enemy in enemyPool)
-        {
-            if (enemy.activeInHierarchy)
-            {
-                enemy.SetActive(false);  // 적을 비활성화하여 풀로 반환
-            }
-        }
-        Debug.Log("모든 적을 제거했습니다.");
-    }
-
+    
     private void ResetEnemy(GameObject enemy,Transform spawnPoint)
     {
         enemy.transform.SetParent(spawnPoint, false);

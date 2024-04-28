@@ -41,7 +41,7 @@ public class Gun : MonoBehaviour
     {
         outlineSubscription?.Dispose();
     }
-
+    
     private void Update()
     {
         
@@ -59,20 +59,19 @@ public class Gun : MonoBehaviour
     private void Fire()
     {
         if(PlayerHealth.isDead) return;
-        var ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-        var targetPoint = ray.GetPoint(100); // 기본 거리 설정
-        if (Physics.Raycast(ray, out var hit))
+        var ray=new Ray(firePoint.position,firePoint.forward);
+        var targetPoint=ray.GetPoint(100f);
+        if(Physics.Raycast(ray,out var hit))
         {
             targetPoint = hit.point;
             ApplyDamage(hit);
-
         }
-
-        ShootEffect(targetPoint).Subscribe(_ => { }, () =>
-        {
-            lineRenderer.enabled = false; 
-        });
+        SoundManager.instance.PlaySE("PlayerShoot");
+        ShootEffect(targetPoint)
+            .Subscribe(_ =>
+            {
+                lineRenderer.enabled = false;
+            });
     }
 
     private IObservable<long> ShootEffect(Vector3 target)
