@@ -7,11 +7,10 @@ using DamageNumbersPro;
 public class EnemyHealth : MonoBehaviour
 {
     public int health;
-    private EnemyData enemyData;
+    public EnemyData enemyData;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
     private BoxCollider boxCollider;
-
     
     public DamageNumber EnemyTakeDamage;
     public Transform damageNumberSpawnPoint;
@@ -21,11 +20,9 @@ public class EnemyHealth : MonoBehaviour
 
     public void Awake()
     {
-        enemyData = GetComponent<Enemy>().enemyData;
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         boxCollider = GetComponent<BoxCollider>();
-        
     }
     
     public void Start()

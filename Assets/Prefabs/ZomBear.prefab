@@ -282,6 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  enemyData: {fileID: 11400000, guid: c15a8a06d9a872844a96e0fac772e453, type: 2}
   EnemyTakeDamage: {fileID: 1109327519295939944, guid: 65988c46599dbe647b4fcd9b45089693, type: 3}
   damageNumberSpawnPoint: {fileID: 4640174367104234736}
 --- !u!114 &5070780190948079693

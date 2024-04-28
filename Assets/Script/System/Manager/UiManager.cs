@@ -15,6 +15,8 @@ public class UiManager : MonoBehaviour
     public Slider bgmSlider;
     public Slider sfxSlider;
 
+    public Slider MapBossSlider;
+    
     private void Start()
     {
         gameoverUI.gameObject.SetActive(false);
@@ -31,7 +33,6 @@ public class UiManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -71,5 +72,11 @@ public class UiManager : MonoBehaviour
     public void MuteAllSound(bool isMute)
     {
         SoundManager.instance.MuteAllSound(isMute);
+    }
+    
+    public void BossSystemUI(int guage)
+    {
+        //시간이 지날수록 조금씩 차오르도록 설정
+        MapBossSlider.DOValue(guage, 1);
     }
 }

@@ -69,12 +69,12 @@ public class PlayerHealth : MonoBehaviour
 
     private void FlashRedEffect()
     {
-        colorGrading.colorFilter.value = Color.red;
+        //colorGrading.colorFilter.value = Color.red;
         outlinable.OutlineParameters.Color = Color.red;
         // 0.5초 후에 색상을 원래대로 복구
         Observable.Timer(System.TimeSpan.FromSeconds(0.5)).Subscribe(_ =>
         {
-            colorGrading.colorFilter.value = Color.white;
+            //colorGrading.colorFilter.value = Color.white;
             outlinable.OutlineParameters.Color = Color.green;
         }).AddTo(this);
     }

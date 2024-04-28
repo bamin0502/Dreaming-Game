@@ -20,15 +20,15 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
+        Time.timeScale = 1;
         UiManager.instance.PauseGameUI.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-            Time.timeScale = 0;
-            UiManager.instance.PauseGameUI.gameObject.SetActive(true);
+            GamePause();
         }
     }
 
@@ -52,4 +52,14 @@ public class GameManager : MonoBehaviour
         UiManager.instance.PauseGameUI.gameObject.SetActive(false);
     }
 
+    public void BossSystem()
+    {
+        
+    }
+    
+    public void GamePause()
+    {
+        Time.timeScale = 0;
+        UiManager.instance.PauseGameUI.gameObject.SetActive(true);
+    }
 }
