@@ -732,20 +732,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466a1e2517eaf9845982f18294a5add8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmClips:
-  - {fileID: 8300000, guid: 4fff99673a41e24439d527ad0bd6b569, type: 3}
-  sfxClips:
-  - {fileID: 8300000, guid: 8c615fd0429f34edf85539d70279360d, type: 3}
-  - {fileID: 8300000, guid: fce027b40770a44298a6f5a4233bfb04, type: 3}
-  - {fileID: 8300000, guid: d36a393bca4582043982db9089e1694f, type: 3}
-  - {fileID: 8300000, guid: fa7f046ce321d4021b5e753bf1152916, type: 3}
-  - {fileID: 8300000, guid: 9922a12f34d0a084aab32de985459723, type: 3}
-  - {fileID: 8300000, guid: 62366b8d2c37a49dca550841c741317f, type: 3}
-  - {fileID: 8300000, guid: 1d4840678e677424b8921716c72397ea, type: 3}
-  - {fileID: 8300000, guid: 1d3bfb9269f136947bf8ac164cace1ff, type: 3}
-  - {fileID: 8300000, guid: 02e6208ec76314158a9f548f51fe9f11, type: 3}
-  bgmSource: {fileID: 1538811579}
-  sfxSource: {fileID: 1538811579}
+  effectSounds:
+  - name: 
+    clip: {fileID: 8300000, guid: 8c615fd0429f34edf85539d70279360d, type: 3}
+  - name: 
+    clip: {fileID: 8300000, guid: fce027b40770a44298a6f5a4233bfb04, type: 3}
+  - name: 
+    clip: {fileID: 8300000, guid: d36a393bca4582043982db9089e1694f, type: 3}
+  - name: 
+    clip: {fileID: 8300000, guid: fa7f046ce321d4021b5e753bf1152916, type: 3}
+  - name: 
+    clip: {fileID: 8300000, guid: 9922a12f34d0a084aab32de985459723, type: 3}
+  - name: 
+    clip: {fileID: 8300000, guid: 62366b8d2c37a49dca550841c741317f, type: 3}
+  - name: 
+    clip: {fileID: 8300000, guid: 1d4840678e677424b8921716c72397ea, type: 3}
+  - name: 
+    clip: {fileID: 8300000, guid: 1d3bfb9269f136947bf8ac164cace1ff, type: 3}
+  - name: 
+    clip: {fileID: 8300000, guid: 02e6208ec76314158a9f548f51fe9f11, type: 3}
+  bgmSounds:
+  - name: BGM
+    clip: {fileID: 8300000, guid: 4fff99673a41e24439d527ad0bd6b569, type: 3}
+  bgmAudioSource: {fileID: 1538811579}
+  effectAudioSources:
+  - {fileID: 1538811579}
 --- !u!1 &107578543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2297,6 +2308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameoverUI: {fileID: 1671026952}
+  gameoverText: {fileID: 534071577}
   healthSlider: {fileID: 6036422114026242513}
   scoreText: {fileID: 1821267591}
   PauseGameUI: {fileID: 939349432}
@@ -3849,19 +3861,7 @@ MonoBehaviour:
   m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1262002699}
-        m_TargetAssemblyTypeName: UiManager, Assembly-CSharp
-        m_MethodName: UpdateHealth
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &6036422114026242514
 MonoBehaviour:
   m_ObjectHideFlags: 0
