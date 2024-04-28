@@ -8,6 +8,7 @@ public class UiManager : MonoBehaviour
     public static UiManager instance;
 
     public Image gameoverUI;
+    public TextMeshProUGUI gameoverText;
     public Slider healthSlider;
     public TMP_Text scoreText;
     public Image PauseGameUI;
@@ -18,15 +19,15 @@ public class UiManager : MonoBehaviour
     {
         gameoverUI.gameObject.SetActive(false);
         
-        bgmSlider.onValueChanged.AddListener(SetBgmVolume);
-        sfxSlider.onValueChanged.AddListener(SetSfxVolume);
-        
-        bgmSlider.value = SoundManager.Inst.bgmSource.volume;
-        sfxSlider.value = SoundManager.Inst.sfxSource.volume;
+       
+
     }
 
     private void Awake()
     {
+        bgmSlider.onValueChanged.AddListener(SetBgmVolume);
+        sfxSlider.onValueChanged.AddListener(SetSfxVolume);
+
         if (instance == null)
         {
             instance = this;
@@ -52,20 +53,23 @@ public class UiManager : MonoBehaviour
     {
         gameoverUI.gameObject.SetActive(true);
         gameoverUI.DOFade(1, 3);
+        gameoverText.DOFade(1, 3);
     }
 
     public void SetBgmVolume(float volume)
     {
-        SoundManager.Inst.SetBgmVolume(volume);
+        SoundManager.instance.SetBgmVolume(volume);
+        PlayerPrefs.SetFloat("bgmVolume", volume);
     }
 
     public void SetSfxVolume(float volume)
     {
-        SoundManager.Inst.SetSfxVolume(volume);
+        SoundManager.instance.SetSfxVolume(volume);
+        PlayerPrefs.SetFloat("sfxVolume", volume);
     }
 
     public void MuteAllSound(bool isMute)
     {
-        SoundManager.Inst.MuteAllSound(isMute);
+        SoundManager.instance.MuteAllSound(isMute);
     }
 }
