@@ -66,7 +66,7 @@ public class Gun : MonoBehaviour
             targetPoint = hit.point;
             ApplyDamage(hit);
         }
-        SoundManager.instance.PlaySE("PlayerShoot");
+        
         ShootEffect(targetPoint)
             .Subscribe(_ =>
             {

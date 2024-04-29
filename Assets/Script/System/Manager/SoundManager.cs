@@ -26,7 +26,6 @@ public class SoundManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -51,6 +50,21 @@ public class SoundManager : MonoBehaviour
             effectAudioSource.volume = PlayerPrefs.GetFloat("sfxVolume", 1f);
         }
         bgmAudioSource.loop = true;
+        PlayBGM("BGM");
+    }
+
+    private void PlayBGM(string bgm)
+    {
+        Sound bgmSound = System.Array.Find(bgmSounds, sound => sound.name == bgm);
+        if (bgmSound != null)
+        {
+            bgmAudioSource.clip = bgmSound.clip;
+            bgmAudioSource.Play();
+        }
+        else
+        {
+            Debug.Log(bgm + " sound is not registered in SoundManager.");
+        }
     }
 
     public void SetBgmVolume(float volume)
@@ -79,7 +93,7 @@ public class SoundManager : MonoBehaviour
             {
                 if (effectAudioSource.isPlaying) continue;
                 effectAudioSource.clip = effectSound.clip;
-                effectAudioSource.Play();
+                effectAudioSource.PlayOneShot(effectSound.clip);
                 break;
             }
         }
@@ -114,5 +128,11 @@ public class SoundManager : MonoBehaviour
         {
             effectAudioSource.mute = isMute;
         }
+
+        if (isMute || Time.timeScale == 0)
+        {
+            AudioListener.pause = isMute;
+        }
+        
     }
 }

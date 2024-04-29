@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1;
-        UiManager.instance.PauseGameUI.gameObject.SetActive(false);
     }
 
     private void Update()

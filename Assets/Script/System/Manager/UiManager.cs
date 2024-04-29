@@ -14,22 +14,26 @@ public class UiManager : MonoBehaviour
     public Image PauseGameUI;
     public Slider bgmSlider;
     public Slider sfxSlider;
+    public TMP_Dropdown resolutionDropdown;
 
     public Slider MapBossSlider;
     
     private void Start()
     {
         gameoverUI.gameObject.SetActive(false);
-        
-        healthSlider.maxValue = 100;
 
+        healthSlider.maxValue = 100;
+        
+        bgmSlider.onValueChanged.AddListener(SetBgmVolume);
+        sfxSlider.onValueChanged.AddListener(SetSfxVolume);
+        resolutionDropdown.onValueChanged.AddListener(SetResolution);
+        PauseGameUI.gameObject.SetActive(false);
     }
 
     private void Awake()
     {
-        bgmSlider.onValueChanged.AddListener(SetBgmVolume);
-        sfxSlider.onValueChanged.AddListener(SetSfxVolume);
-
+        resolutionDropdown.value = PlayerPrefs.GetInt("Resolution", 0);
+            
         if (instance == null)
         {
             instance = this;
@@ -78,5 +82,22 @@ public class UiManager : MonoBehaviour
     {
         //시간이 지날수록 조금씩 차오르도록 설정
         MapBossSlider.DOValue(guage, 1);
+    }
+    public void SetResolution(int resolutionIndex)
+    {
+        PlayerPrefs.SetInt("Resolution", resolutionIndex);
+        switch (resolutionIndex)
+        {
+            case 0:
+                Screen.SetResolution(1920, 1080, false);
+                break;
+            case 1:
+                Screen.SetResolution(2560, 1440, false);
+                break;
+            case 2:
+                Screen.SetResolution(1280, 720, false);
+                break;
+        }
+        Debug.Log("Resolution: " + resolutionDropdown.options[resolutionIndex].text);
     }
 }
